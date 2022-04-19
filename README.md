@@ -8,11 +8,11 @@ A command line utility that takes a chord name and generates tablature notation 
 
 ## Parameters
 
-| parameter | default | description |                 |
-|-----------|---------|-------------------------------|
-| `-chord`  |    C    | C major     |                 |
-|-----------|---------|-------------------------------|
-| `-debug`  |  false  | boolean, display debug output |
+| parameter | default | description  |
+|-----------|---------|--------------|
+| `-chord`  |    C    | C major      |
+|-----------|---------|--------------|
+| `-debug`  |  false  | debug output |
 
 ## Tablature notation
 
