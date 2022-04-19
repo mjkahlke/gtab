@@ -15,7 +15,7 @@ A command line utility that takes a chord name and generates tablature notation 
 
 ## Tablature notation
 
-Guitar tab directly relates to fret positions on the guitar fretboard. An `x` denotes a string that is not played. A `decimal digit` indicates what fret to finger; a `0` signifies an open string. The relative position of digits from left to right indicate which `string` to finger a given fret.
+Guitar tab directly relates to fret positions on the guitar fretboard. An `x` denotes a string that is not played. A `decimal digit` indicates what fret to finger; a `0` signifies an open string. The relative position of digits from left to right indicate which `string` to finger a given fret. For example, a Cmaj7 chord tab can be represented as either `x 3 2 0 0 0` or `x 3 5 4 5 3`. Note that the first form is `fingered` whereas the second form is `barred` meaning the forefinger is held across the entire fret on the fretboard while the remaining fingers finger notes on frets higher up the fretboard.
 
 Note that tab notation does not tell you which finger to place where. That is left up to you. The gtab application makes a weak attempt at determing if a chord is playable by counting the number of non-open fret positions and comparing that to the number of fingers on your hand, but some chords could still require some contortion to play, which brings us to the next section.
 
