@@ -11,7 +11,6 @@ A command line utility that takes a chord name and generates tablature notation 
 | parameter | default | description  |
 |-----------|---------|--------------|
 | `-chord`  |    C    | C major      |
-|-----------|---------|--------------|
 | `-debug`  |  false  | debug output |
 
 ## Tablature notation
