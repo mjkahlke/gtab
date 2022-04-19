@@ -1,6 +1,6 @@
 // Copyright 2022 Michael Kahlke.
 
-package gtab
+package main
 
 /*
 Given a known chord name, display the guitar tab.
