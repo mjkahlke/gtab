@@ -1,6 +1,6 @@
 // Copyright 2022 Michael Kahlke.
 
-package main
+package gtab
 
 /*
 Given a known chord name, display the guitar tab.
@@ -150,8 +150,7 @@ func main() {
 
 	if debug {
 		for key, halfsteps := range chords {
-			fmt.Printf("Chord suffix: %s", key)
-			fmt.Printf(", half step positions/notes: %s", key)
+			fmt.Printf("Chord suffix: %s, intervals:", key)
 			for _, halfstep := range halfsteps {
 				fmt.Printf(" %d", halfstep)
 			}
@@ -185,17 +184,19 @@ func chord_root(name string) (string, string) {
 			base = root
 		}
 	}
+	if debug { fmt.Printf("Chord name %s, base %s, name[%d:] = %s\n", name, base, len(base), name[len(base):]) }
 	return base, name[len(base):]
 }
 
 const INTERVALS int = 12
 
+var frets = []int{5,5,5,4,5,5}	// # halfsteps (frets) between strings (including imaginary 7th string)
+
 func match(root string, suffix string) {
-	var frets = []int{5,5,5,4,5,5}	// # halfsteps (frets) between strings (including imaginary 7th string)
 	var num_strings = len(frets)
 	// Find chord root on fretboard
-	var root_string int
-	var root_fret int
+	root_string := -1
+	root_fret := -1
 	// low E-string based root names
 	var sharp_root_names = [INTERVALS]string{"E","F","F#","G","G#","A","A#","B", "C","C#","D","D#"}
 	var flat_root_names = [INTERVALS]string{"E","F","Gb","G","Ab","A","Bb","B","C","Db","D","Eb"}
@@ -212,6 +213,11 @@ func match(root string, suffix string) {
 		}
 		cursor += frets[gstring]
 	}
+	if root_string == -1 {
+		fmt.Printf("Cannot determine root string and fret for bass note of chord name %s%s\n", root, suffix)
+		os.Exit(0)
+	}
+
 	// Find matching suffix
 	halfsteps, exists := chords[suffix]
 	if !exists {
@@ -220,7 +226,8 @@ func match(root string, suffix string) {
 	}
 
 	if debug {
-		fmt.Printf(" for %s%s, tab progression found: ", root, suffix)
+		var root_strings = []string{"E","A","D","G","B","E"}
+		fmt.Printf("Root string: %s, root fret: %d for %s%s, tab progression found: ", root_strings[root_string], root_fret, root, suffix)
 		fmt.Printf("halfsteps:")
 		for i := 0; i < len(halfsteps); i++ {
 			fmt.Printf(" %d", halfsteps[i])
@@ -228,28 +235,90 @@ func match(root string, suffix string) {
 		fmt.Println()
 	}
 
+	tab := find_tab(root_string, root_fret, halfsteps, false)
+	if playable(tab) { fmt.Printf("Finger %s%s: %s\n", root, suffix, gen_tab(tab)) }
+	tab = find_tab(root_string, root_fret, halfsteps, true)
+	if playable(tab) { fmt.Printf("Barred %s%s: %s\n", root, suffix, gen_tab(tab)) }
+
+}
+
+const FINGERS int = 4	// on one hand, not counting thumbs
+
+func playable(atab []int) bool {
+	var non_open_fret_fingerings = make(map[int]int)
+	x_transition := false
+	count := 0
+	for i := range atab {
+		if atab[i] > 0 {
+			fret, fingered := non_open_fret_fingerings[atab[i]]
+			if !fingered {
+				non_open_fret_fingerings[atab[i]] = fret
+				count++
+			}
+		} else {
+			if atab[i] > 0 && atab[max(0, i-1)] < 0 {
+				x_transition = true
+			}
+		}
+	}
+	return !x_transition && count <= FINGERS
+}
+
+func gen_tab(atab []int) string {
 	tab := ""
+	for i := range atab {
+		if atab[i] == -1 {
+			tab += " x"
+		} else {
+			tab += " " + strconv.Itoa(atab[i])
+		}
+	}
+	return tab
+}
+
+func max(a int, b int) int {
+	if (a > b ) {
+		return a
+	} else {
+		return b
+	}
+}
+
+func find_tab(root_string int, root_fret int, halfsteps []int, bar_chord bool) []int {
+	var atab []int
 
 	// X out any strings that precede the root string if applicable
-	for i := 0; i < root_string; i++ { tab += " x" }
+	for i := 0; i < root_string; i++ { atab = append(atab, -1) }
 
 	// Starting at root string and fret, look for notes on successive strings that match chord tones
 	current_offset := 0
+	prev_halfstep := -1
 	for i := root_string; i < len(frets); i++ {
 		matched := false
+		init_j := 0
 		foundmatch:
-		for j := 0; j < frets[i]; j++ {
+		for j := init_j; j < frets[i]; j++ {
 			for k := range halfsteps {
-				if (current_offset+j) % INTERVALS == halfsteps[k] {
-					tab += " " + strconv.Itoa(root_fret+j)
-					current_offset += frets[i]
+				if (current_offset+j) % INTERVALS == halfsteps[k] && prev_halfstep != halfsteps[k] {
+					if bar_chord {
+						atab = append(atab, root_fret+j)
+						current_offset += frets[i]
+					} else {
+						if i == root_string {
+							current_offset += frets[i] - root_fret
+							atab = append(atab, root_fret+j)
+						} else {
+							current_offset += frets[i]
+							atab = append(atab, j)
+						}
+					}
 					matched = true
+					prev_halfstep = halfsteps[k]
 					break foundmatch
 				}
 			}
 		}
-		if !matched { tab += " x" }
+		if !matched { atab = append(atab, -1) }
 	}
-	fmt.Printf("%s%s: %s\n", root, suffix, tab)
+	return atab
 }
-
