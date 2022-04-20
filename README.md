@@ -18,24 +18,24 @@ A guitar tab generator
 The examples below were produced from the executable version produced by `go build`. Note how some tabs are repeated and some are not really playable (see Futures below).
 
 ### Cmaj7
-`# gtab -chord Cmaj7
-Finger Cmaj7:  x 3 2 0 0 0
-Barred Cmaj7:  x 3 5 4 5 3
-Root-E Cmaj7:  8 10 9 9 8 8
+`# gtab -chord Cmaj7  
+Finger Cmaj7:  x 3 2 0 0 0  
+Barred Cmaj7:  x 3 5 4 5 3  
+Root-E Cmaj7:  8 10 9 9 8 8  
 Root-A Cmaj7:  x 3 5 4 5 3`
 
 ### Abmaj7
-`# gtab -chord Abmaj7
-Finger Abmaj7:  4 3 1 0 1 3
-Barred Abmaj7:  4 6 5 5 4 4
-Root-E Abmaj7:  4 6 5 5 4 4
+`# gtab -chord Abmaj7  
+Finger Abmaj7:  4 3 1 0 1 3  
+Barred Abmaj7:  4 6 5 5 4 4  
+Root-E Abmaj7:  4 6 5 5 4 4  
 Root-A Abmaj7:  x 11 13 12 13 11`
 
 ### D
-`# gtab -chord D
-Finger D:  x x 0 2 3 2
-Barred D:  x x 0 2 3 2
-Root-E D: 10 12 12 11 10 10
+`# gtab -chord D  
+Finger D:  x x 0 2 3 2  
+Barred D:  x x 0 2 3 2  
+Root-E D: 10 12 12 11 10 10  
 Root-A D:  x 5 7 7 7 5`
 
 ## Tablature notation
