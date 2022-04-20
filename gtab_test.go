@@ -69,6 +69,20 @@ func TestCmajorTabBarred(t *testing.T) {
 	t.Fatalf("C major (barred) was not correctly produced")
 }
 
+func TestCmajorTabRootE(t *testing.T) {
+	tab := find_tab(0, 8, []int{0,4,7}, true)
+	answer := []int{8,10,10,9,8,8}
+	if reflect.DeepEqual(tab, answer) { return }
+	t.Fatalf("C major (root E) was not correctly produced")
+}
+
+func TestAflatMajor7RootA(t *testing.T) {
+	tab := find_tab(1, 11, []int{0,4,7,11}, true)
+	answer := []int{-1,11,13,12,13,11}
+	if reflect.DeepEqual(tab, answer) { return }
+	t.Fatalf("Abmaj7 (root A) was not correctly produced")
+}
+
 func TestPlayableYes(t *testing.T) {
 	ok := []int{-1,3,2,0,1,0}
 	if playable(ok) { return }
@@ -78,12 +92,12 @@ func TestPlayableYes(t *testing.T) {
 func TestPlayableNo(t *testing.T) {
 	extra_finger := []int{-1,5,4,3,2,1}
 	if !playable(extra_finger) { return }
-	t.Fatalf("Hello, my name is Inigo Montoya. Prepare to die!")
+	t.Fatalf("Hello, my name is Inigo Montoya. You killed my father. Prepare to die!")
 }
 
 func TestGenTabCmaj7(t *testing.T) {
 	cmaj7 := []int{-1,3,2,0,0,0}
 	if gen_tab(cmaj7) == " x 3 2 0 0 0" { return }
-	t.Fatalf("Error generating proper tab for Cmajy chord")
+	t.Fatalf("Error generating proper tab for Cmaj7 chord")
 }
 
