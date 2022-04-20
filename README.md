@@ -24,7 +24,7 @@ Tab notation does not tell you which finger to place, only where to place them. 
 This utility does a fair job of generating accurate playable tab for most guitar chords one would reasonably play in most forms of Western music, but it does get a few wrong.
 
 Some areas of improvement are:
-- generate chord fingerings further up the neck beyond the first four frets
+- generate additional chord fingerings further up the neck beyond the first four frets
 - support for alternate guitar tunings
 - look up a chord name from tab
 
