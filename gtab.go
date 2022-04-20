@@ -2,14 +2,7 @@
 
 package main
 
-/*
-Given a known chord name, display the guitar tab.
-TODO:
-- support for alternate tabs further up the fretboard
-- determine chord name from tab
-- support for alternate names taking (musical) keys into account
-- support for "add" notes for close matches
-*/
+// Given a known chord name, display the guitar tab.
 
 import (
 	"flag"
@@ -164,6 +157,54 @@ func main() {
 	match(root, suffix)
 }
 
+func match(root string, suffix string) {
+	root_string, root_fret := find_root(root)
+	if root_string == -1 || root_fret == -1 {
+		fmt.Printf("Unable to determine root string and fret for %s%s\n", root, suffix)
+		return
+	}
+
+	halfsteps := find_halfsteps(suffix)
+
+	if debug {
+		var root_strings = []string{"E","A","D","G","B","E"}
+		fmt.Printf("Root string: %s, root fret: %d for %s%s, tab progression found: ", root_strings[root_string], root_fret, root, suffix)
+		fmt.Printf("halfsteps:")
+		for i := 0; i < len(halfsteps); i++ {
+			fmt.Printf(" %d", halfsteps[i])
+		}
+		fmt.Println()
+	}
+
+	tab := find_tab(root_string, root_fret, halfsteps, false)
+	if playable(tab) { fmt.Printf("Finger %s%s: %s\n", root, suffix, gen_tab(tab)) }
+	tab = find_tab(root_string, root_fret, halfsteps, true)
+	if playable(tab) { fmt.Printf("Barred %s%s: %s\n", root, suffix, gen_tab(tab)) }
+	root_string, root_fret = find_rootLowE(root)
+	tab = find_tab(root_string, root_fret, halfsteps, true)
+	if playable(tab) { fmt.Printf("Root-E %s%s: %s\n", root, suffix, gen_tab(tab)) }
+	root_string, root_fret = find_rootA(root)
+	tab = find_tab(root_string, root_fret, halfsteps, true)
+	if playable(tab) { fmt.Printf("Root-A %s%s: %s\n", root, suffix, gen_tab(tab)) }
+}
+
+const FINGERS int = 4	// on one hand, not counting thumbs
+
+func playable(atab []int) bool {
+	var non_open_fret_fingerings = make(map[int]int)
+	count := 0
+	for i := range atab {
+		if atab[i] > 0 {
+			fret, fingered := non_open_fret_fingerings[atab[i]]
+			if !fingered {
+				non_open_fret_fingerings[atab[i]] = fret
+				count++
+			}
+		}
+	}
+	return count <= FINGERS
+}
+
 func chord_root(name string) (string, string) {
 	var notes = [7]string{"C","D","E","F","G","A","B"}
 	base := string(name[0])
@@ -189,79 +230,69 @@ func chord_root(name string) (string, string) {
 }
 
 const INTERVALS int = 12
+const STRINGS int = 6
 
 var frets = []int{5,5,5,4,5,5}	// # halfsteps (frets) between strings (including imaginary 7th string)
 
-func match(root string, suffix string) {
-	var num_strings = len(frets)
-	// Find chord root on fretboard
-	root_string := -1
-	root_fret := -1
-	// low E-string based root names
-	var sharp_root_names = [INTERVALS]string{"E","F","F#","G","G#","A","A#","B", "C","C#","D","D#"}
-	var flat_root_names = [INTERVALS]string{"E","F","Gb","G","Ab","A","Bb","B","C","Db","D","Eb"}
+// low E-string based root names
+var sharp_root_names = [INTERVALS]string{"E","F","F#","G","G#","A","A#","B", "C","C#","D","D#"}
+var flat_root_names = [INTERVALS]string{"E","F","Gb","G","Ab","A","Bb","B","C","Db","D","Eb"}
+
+func find_root(root string) (int, int) {
 	cursor := 0
-	findroot:
-	for gstring := 0; gstring < num_strings; gstring++ {
-		// Start with fret "0" on this gstring
-		for fret := 0; fret < frets[gstring]; fret++ {
+	// Find chord root on fretboard
+	for i := 0; i < STRINGS; i++ {
+		// Start with fret "0" on this string
+		for fret := 0; fret < frets[i]; fret++ {
 			if root == sharp_root_names[(cursor+fret)%INTERVALS] || root == flat_root_names[(cursor+fret)%INTERVALS] {
-				root_string = gstring
-				root_fret = fret
-				break findroot
+				return i, fret
 			}
 		}
-		cursor += frets[gstring]
+		cursor += frets[i]
 	}
-	if root_string == -1 {
-		fmt.Printf("Cannot determine root string and fret for bass note of chord name %s%s\n", root, suffix)
-		os.Exit(0)
-	}
+	return -1, -1
+}
 
+func find_rootLowE(root string) (int, int) {
+	for f, n := range sharp_root_names {
+		if root == n {
+			return 0, f
+		}
+	}
+	for f, n := range flat_root_names {
+		if root == n {
+			return 0, f
+		}
+	}
+	return -1, -1
+}
+
+// A-string based root names
+var a_sharp_root_names = [INTERVALS]string{"A","A#","B","C","C#","D","D#","E","F","F#","G","G#"}
+var a_flat_root_names = [INTERVALS]string{"A","Bb","B","C","Db","D","Eb","E","F","Gb","G","Ab"}
+
+func find_rootA(root string) (int, int) {
+	for f, n := range a_sharp_root_names {
+		if root == n {
+			return 1, f
+		}
+	}
+	for f, n := range a_flat_root_names {
+		if root == n {
+			return 1, f
+		}
+	}
+	return -1, -1
+}
+
+func find_halfsteps(suffix string) []int {
 	// Find matching suffix
 	halfsteps, exists := chords[suffix]
 	if !exists {
-		fmt.Printf("Cannot determine tab for chord %s%s\n", root, suffix)
+		fmt.Printf("Cannot determine formula for chord suffix %s\n", suffix)
 		os.Exit(0)
 	}
-
-	if debug {
-		var root_strings = []string{"E","A","D","G","B","E"}
-		fmt.Printf("Root string: %s, root fret: %d for %s%s, tab progression found: ", root_strings[root_string], root_fret, root, suffix)
-		fmt.Printf("halfsteps:")
-		for i := 0; i < len(halfsteps); i++ {
-			fmt.Printf(" %d", halfsteps[i])
-		}
-		fmt.Println()
-	}
-
-	tab := find_tab(root_string, root_fret, halfsteps, false)
-	if playable(tab) { fmt.Printf("Finger %s%s: %s\n", root, suffix, gen_tab(tab)) }
-	tab = find_tab(root_string, root_fret, halfsteps, true)
-	if playable(tab) { fmt.Printf("Barred %s%s: %s\n", root, suffix, gen_tab(tab)) }
-
-}
-
-const FINGERS int = 4	// on one hand, not counting thumbs
-
-func playable(atab []int) bool {
-	var non_open_fret_fingerings = make(map[int]int)
-	x_transition := false
-	count := 0
-	for i := range atab {
-		if atab[i] > 0 {
-			fret, fingered := non_open_fret_fingerings[atab[i]]
-			if !fingered {
-				non_open_fret_fingerings[atab[i]] = fret
-				count++
-			}
-		} else {
-			if atab[i] > 0 && atab[max(0, i-1)] < 0 {
-				x_transition = true
-			}
-		}
-	}
-	return !x_transition && count <= FINGERS
+	return halfsteps
 }
 
 func gen_tab(atab []int) string {
