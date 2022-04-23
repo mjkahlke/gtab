@@ -34,19 +34,30 @@ A weak attempt is made at determining if a chord is playable by counting the num
 
 Several sample runs are shown below. Note how some tabs are not really playable (see Futures below).
 
+### Help
+    # gtab -help
+    Usage of gtab:
+      -chord string
+            set to chord name, b=flat, #=sharp (default "C")
+      -list
+            list supported chord formulas
+
 ### Cmaj7
+    # gtab -chord Cmaj7
     x 3 2 0 0 0
     x 3 5 4 5 3
     x x 10 12 12 12
     x x x 5 5 7
 
 ### B7
+    # gtab -chord B7
     x 2 1 2 0 2
     x 2 4 2 4 2
     x x 9 11 10 11
     x x x 4 4 5
 
 ### Abmaj7
+    # gtab -chord Abmaj7
     4 3 1 0 1 3
     4 6 5 5 4 4
     x 11 13 12 13 11
@@ -54,11 +65,13 @@ Several sample runs are shown below. Note how some tabs are not really playable 
     x x x 1 1 3
 
 ### D
+    # gtab -chord D
     x 5 7 7 7 5
     x x 0 2 3 2
     x x x 7 7 10
     
 ### F#sus4
+    # gtab -chord F#sus4
     2 2 4 4 2 2
     2 2 4 x 4 1
     x 9 9 11 12 9
