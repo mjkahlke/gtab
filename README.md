@@ -4,7 +4,11 @@ A guitar tab generator
 
 ## Overview
 
-`gtab` is a command line utility that takes a chord name and generates tablature notation (tab) for playing the chord on a six-string guitar in standard tuning. It determines the root of the chord from the chord name, then performs a map lookup of the tonal signature of the chord suffix. For example, the Cmaj7 chord construction formula is a maj7 (at intervals 1,3,5,7) at the root note C. These intervals correspond to 0,4,7,11 half steps from the root note of the chord. It is then a simple matter of counting guitar frets and strings to generate a chord fingering or tab.
+`gtab` is a command line utility that takes a chord name and generates tab (tablature notation) for playing the chord on a six-string guitar in standard tuning.
+
+## How it works
+
+The root of the chord is determined from the chord name, then the chord suffix is used as a map key to lookup the tonal signature of the chord. For example, Cmaj7 is a maj7 chord with a root of C. The chord construction formula for maj7 is composed of a unison, major 3rd, perfect 5th and dominant 7th note or interval. This corresponds to 0, 4, 7 and 11 half steps (frets) from the root. It is then a simple matter of counting guitar frets and strings to generate a tab.
 
 ## Tablature notation
 
@@ -13,9 +17,11 @@ Guitar tab denotes fret positions on the guitar fretboard:
 - A `0` signifies an open string
 - A `decimal digit` indicates what fret to finger
 
-The relative position of x's and digits from left to right indicate which `string` to play from the low to the high E string. For example, a `Cmaj7` chord tab can be represented as either `x 3 2 0 0 0` or `x 3 5 4 5 3`. In both cases the low E string is not played. Note that the first form is `fingered` whereas the second form is `barred` at the root fret.
+The relative position of x's and digits from left to right indicate which `string` to play from the low to the high E string. For example, a `Cmaj7` chord tab could be represented as either `x 3 2 0 0 0` or `x 3 5 4 5 3`. In both cases the low E string is not played. Note that the first form is `fingered` whereas the second form is `barred` at the third fret.
 
-Tab notation does not tell you which fingers to place, only where to place them: that decision is left to you. A weak attempt is made at determining if a chord is playable by counting the number of non-open fret positions and comparing that to the number of fingers on your hand, but some chords may still require some amount of contortion to play; feel free to drop a few notes in these cases.
+Tab notation does not tell you which fingers to place, only where to place them: that decision is left to you. In the previous example, two fingers are used to play the fingered form. I typically play this chord with my middle and ring fingers although many others play it with their forefinger and middle finger. The second form is obviously barred as the lowest fret appears on multiple disjointed strings.
+
+A weak attempt is made at determining if a chord is playable by counting the number of non-open fret positions and comparing that to the number of fingers on your hand, but some chords may still require some amount of contortion to play; feel free to drop a few notes in these cases. A better algorithm may be to count the number of fret transitions. 
 
 ## Parameters
 
@@ -26,45 +32,49 @@ Tab notation does not tell you which fingers to place, only where to place them:
 
 ## Sample output
 
-The examples below were produced from the executable version produced by `go build`. Note how some tabs are repeated and some are not really playable (see Futures below).
+Several sample runs are shown below. Note how some tabs are not really playable (see Futures below).
 
 ### Cmaj7
-    # gtab -chord Cmaj7
-    Finger Cmaj7:  x 3 2 0 0 0
-    Barred Cmaj7:  x 3 5 4 5 3
-    Root-E Cmaj7:  8 10 9 9 8 8
-    Root-A Cmaj7:  x 3 5 4 5 3
-    Root-D Cmaj7:  x x 10 12 12 12
-    Root-G Cmaj7:  x x x 5 5 7
+    x 3 2 0 0 0
+    x 3 5 4 5 3
+    x x 10 12 12 12
+    x x x 5 5 7
+
+### B7
+    x 2 1 2 0 2
+    x 2 4 2 4 2
+    x x 9 11 10 11
+    x x x 4 4 5
 
 ### Abmaj7
-    # gtab -chord Abmaj7
-    Finger Abmaj7:  4 3 1 0 1 3
-    Barred Abmaj7:  4 6 5 5 4 4
-    Root-E Abmaj7:  4 6 5 5 4 4
-    Root-A Abmaj7:  x 11 13 12 13 11
-    Root-D Abmaj7:  x x 6 8 8 8
-    Root-G Abmaj7:  x x x 1 1 3
+    4 3 1 0 1 3
+    4 6 5 5 4 4
+    x 11 13 12 13 11
+    x x 6 8 8 8
+    x x x 1 1 3
 
 ### D
-    # gtab -chord D
-    Finger D:  x x 0 2 3 2
-    Barred D:  x x 0 2 3 2
-    Root-E D:  10 12 12 11 10 10
-    Root-A D:  x 5 7 7 7 5
-    Root-D D:  x x 0 2 3 2
-    Root-G D:  x x x 7 7 10
+    x 5 7 7 7 5
+    x x 0 2 3 2
+    x x x 7 7 10
+    
+### F#sus4
+    2 2 4 4 2 2
+    2 2 4 x 4 1
+    x 9 9 11 12 9
+    x x 4 4 7 7
+    x x x 11 12 14
 
 ## Futures
 
 `gtab` does a fair job of generating tabs for common guitar chords played in most forms of Western music, but it does get a few wrong.
 
 Some areas of improvement are:
-- generate additional chord fingerings further up the neck beyond the first four frets
+- generate tabs that aren't centered off the root note/fret location
 - do a better job of determining whether a chord is playable
 - support for additional chord formulas e.g. chord inversions and added notes
 - support for alternate guitar tunings
-- look up a chord name from tab
+- reverse lookup: find a chord name from tab
 
 ## References
 
