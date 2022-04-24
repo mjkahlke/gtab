@@ -53,21 +53,22 @@ func match(root string, suffix string) {
 	if playable(tab) { tabs[genTab(tab)] = tab }
 
 	// Root on low E string
+	root_string, root_fret = findRootOnString(root, E)
 	tab = findTab(root_string, root_fret, halfsteps, true)
 	if playable(tab) { tabs[genTab(tab)] = tab }
 
 	// Root on A string
-	root_string, root_fret = findRootA(root)
+	root_string, root_fret = findRootOnString(root, A)
 	tab = findTab(root_string, root_fret, halfsteps, true)
 	if playable(tab) { tabs[genTab(tab)] = tab }
 
 	// Root on D string
-	root_string, root_fret = findRootD(root)
+	root_string, root_fret = findRootOnString(root, D)
 	tab = findTab(root_string, root_fret, halfsteps, true)
 	if playable(tab) { tabs[genTab(tab)] = tab }
 
 	// Root on G string
-	root_string, root_fret = findRootG(root)
+	root_string, root_fret = findRootOnString(root, G)
 	tab = findTab(root_string, root_fret, halfsteps, true)
 	if playable(tab) { tabs[genTab(tab)] = tab }
 

@@ -44,25 +44,25 @@ func TestFindRoot(t *testing.T) {
 }
 
 func TestFindRootE(t *testing.T) {
-	str, fret := findRootE("C")
+	str, fret := findRootOnString("C", E)
 	if str != 0 { t.Fatalf("Incorrect string index "+strconv.Itoa(str)+" returned instead of 0 for C") }
 	if fret != 8 { t.Fatalf("Incorrect fret index "+strconv.Itoa(fret)+" returned instead of 8 for C") }
 }
 
 func TestFindRootA(t *testing.T) {
-	str, fret := findRootA("C")
+	str, fret := findRootOnString("C", A)
 	if str != 1 { t.Fatalf("Incorrect string index "+strconv.Itoa(str)+" returned instead of 1 for C") }
 	if fret != 3 { t.Fatalf("Incorrect fret index "+strconv.Itoa(fret)+" returned instead of 3 for C") }
 }
 
 func TestFindRootD(t *testing.T) {
-	str, fret := findRootD("C")
+	str, fret := findRootOnString("C", D)
 	if str != 2 { t.Fatalf("Incorrect string index "+strconv.Itoa(str)+" returned instead of 2 for C") }
 	if fret != 10 { t.Fatalf("Incorrect fret index "+strconv.Itoa(fret)+" returned instead of 10 for C") }
 }
 
 func TestFindRootG(t *testing.T) {
-	str, fret := findRootG("C")
+	str, fret := findRootOnString("C", G)
 	if str != 3 { t.Fatalf("Incorrect string index "+strconv.Itoa(str)+" returned instead of 3 for C") }
 	if fret != 5 { t.Fatalf("Incorrect fret index "+strconv.Itoa(fret)+" returned instead of 5 for C") }
 }

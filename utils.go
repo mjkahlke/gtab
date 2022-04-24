@@ -53,88 +53,30 @@ func playable(atab []int) bool {
 	return count <= FINGERS
 }
 
-// low E-string root names
-var sharps_E = [INTERVALS]string{"E","F","F#","G","G#","A","A#","B", "C","C#","D","D#"}
-var flats_E = [INTERVALS]string{"E","F","Gb","G","Ab","A","Bb","B","C","Db","D","Eb"}
-
 func findRoot(root string) (int, int) {
 	cursor := 0
 	// Find chord root at base of fretboard
 	for i := 0; i < STRINGS; i++ {
-		// Start with fret "0" on this string
+		// Try halfsteps on this string leading up to the next string
 		for fret := 0; fret < frets[i]; fret++ {
-			if root == sharps_E[(cursor+fret)%INTERVALS] || root == flats_E[(cursor+fret)%INTERVALS] {
+			if root == sharps[(cursor+fret)%INTERVALS] || root == flats[(cursor+fret)%INTERVALS] {
 				return i, fret
 			}
 		}
+		// Advance cursor to the next string and keep going
 		cursor += frets[i]
 	}
 	return -1, -1
 }
 
-func findRootE(root string) (int, int) {
-	for f, n := range sharps_E {
-		if root == n {
-			return 0, f
-		}
+func findRootOnString(root string, s String) (int, int) {
+	cursor := 0
+	for i := 0; i < int(s); i++ {
+		cursor += frets[i]
 	}
-	for f, n := range flats_E {
-		if root == n {
-			return 0, f
-		}
-	}
-	return -1, -1
-}
-
-// A-string based root names
-var sharps_A = [INTERVALS]string{"A","A#","B","C","C#","D","D#","E","F","F#","G","G#"}
-var flats_A = [INTERVALS]string{"A","Bb","B","C","Db","D","Eb","E","F","Gb","G","Ab"}
-
-func findRootA(root string) (int, int) {
-	for f, n := range sharps_A {
-		if root == n {
-			return 1, f
-		}
-	}
-	for f, n := range flats_A {
-		if root == n {
-			return 1, f
-		}
-	}
-	return -1, -1
-}
-
-// D-string based root names
-var sharps_D = [INTERVALS]string{"D","D#","E","F","F#","G","G#","A","A#","B","C","C#"}
-var flats_D = [INTERVALS]string{"D","Eb","E","F","Gb","G","Ab","A","Bb","B","C","Db"}
-
-func findRootD(root string) (int, int) {
-	for f, n := range sharps_D {
-		if root == n {
-			return 2, f
-		}
-	}
-	for f, n := range flats_D {
-		if root == n {
-			return 2, f
-		}
-	}
-	return -1, -1
-}
-
-// G-string based root names
-var sharps_G = [INTERVALS]string{"G","G#","A","A#","B","C","C#","D","D#","E","F","F#"}
-var flats_G = [INTERVALS]string{"G","Ab","A","Bb","B","C","Db","D","Eb","E","F","Gb"}
-
-func findRootG(root string) (int, int) {
-	for f, n := range sharps_G {
-		if root == n {
-			return 3, f
-		}
-	}
-	for f, n := range flats_G {
-		if root == n {
-			return 3, f
+	for i := 0; i < INTERVALS; i++ {
+		if root == sharps[(cursor+i)%INTERVALS] || root == flats[(cursor+i)%INTERVALS] {
+			return int(s), i
 		}
 	}
 	return -1, -1
