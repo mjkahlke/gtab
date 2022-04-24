@@ -17,7 +17,7 @@ Guitar tab denotes fret positions on the guitar fretboard:
 - A `0` signifies an open string
 - A `number` indicates what fret to finger
 
-The relative position of x's and numbers from left to right indicate which string to play from the low E to the high E string. Chords can be played in multiple locations along the fretboard. For example, common tabs for Cmaj7 are `x 3 2 0 0 0` or `x 3 5 4 5 3`. In both cases the low E string is not played. Note that the first form is _fingered_ whereas the second form is _barred_ at the third fret.
+The relative position of x's and numbers from left to right indicate which string to play from the low E to the high E string. Chords can be played in multiple locations along the fretboard. For example, common tabs for Cmaj7 are `x 3 2 0 0 0` and `x 3 5 4 5 3`. In both cases the low E string is not played. Note that the first form is _fingered_ whereas the second form is _barred_ at the third fret.
 
 Tab notation does not tell you which fingers to place, only where to place them: that decision is left to you. In the Cmaj7 example above, two fingers are used to play the fingered form. The chord can be played either with the middle and ring fingers, or the forefinger and middle finger. The second form is barred with the forefinger at the third fret.
 
@@ -44,6 +44,7 @@ The output of several runs are shown below.
 
 ### Cmaj7
     # gtab -chord Cmaj7
+    8 10 9 9 8 8
     x 3 2 0 0 0
     x 3 5 4 5 3
     x x 10 12 12 12
@@ -51,6 +52,7 @@ The output of several runs are shown below.
 
 ### B7
     # gtab -chord B7
+    7 9 7 8 7 7
     x 2 1 2 0 2
     x 2 4 2 4 2
     x x 9 11 10 11
@@ -66,6 +68,7 @@ The output of several runs are shown below.
 
 ### D
     # gtab -chord D
+    10 12 12 11 10 10
     x 5 7 7 7 5
     x x 0 2 3 2
     x x x 7 7 10
