@@ -4,7 +4,7 @@ A guitar tab generator
 
 ## Overview
 
-`gtab` is a command line utility that takes a chord name and generates tab (tablature notation) for playing the chord on a six-string guitar in standard tuning.
+**gtab** is a command line utility that takes a chord name and generates tab (tablature notation) for playing the chord on a six-string guitar in standard tuning.
 
 ## How it works
 
@@ -15,24 +15,24 @@ The root of the chord is determined from the chord name, then the chord suffix i
 Guitar tab denotes fret positions on the guitar fretboard:
 - An `x` denotes a string that is not played
 - A `0` signifies an open string
-- A `decimal digit` indicates what fret to finger
+- A `number` indicates what fret to finger
 
-The relative position of x's and digits from left to right indicate which `string` to play from the low to the high E string. For example, a `Cmaj7` chord tab could be represented as either `x 3 2 0 0 0` or `x 3 5 4 5 3`. In both cases the low E string is not played. Note that the first form is `fingered` whereas the second form is `barred` at the third fret.
+The relative position of x's and numbers from left to right indicate which string to play from the low E to the high E string. For example, a Cmaj7 chord tab could be represented as either `x 3 2 0 0 0` or `x 3 5 4 5 3`. In both cases the low E string is not played. Note that the first form is _fingered_ whereas the second form is _barred_ at the third fret.
 
-Tab notation does not tell you which fingers to place, only where to place them: that decision is left to you. In the previous example, two fingers are used to play the fingered form. I typically play this chord with my middle and ring fingers although many others play it with their forefinger and middle finger. The second form is obviously barred as the lowest fret appears on multiple disjointed strings.
+Tab notation does not tell you which fingers to place, only where to place them: that decision is left to you. In the previous example, two fingers are used to play the fingered form. This chord could be played either with the middle and ring fingers, or the forefinger and middle finger. The second form is barred with the forefinger at the third fret.
 
-A weak attempt is made at determining if a chord is playable by counting the number of non-open fret positions and comparing that to the number of fingers on your hand, but some chords may still require some amount of contortion to play; feel free to drop a few notes in these cases. A better algorithm may be to count the number of fret transitions. 
+A weak attempt is made at determining if a chord is playable by counting the number of non-open fret positions and comparing that to the number of fingers on your hand, but some chords may still prove too difficult to play; feel free to drop a few notes in these cases. A better algorithm may be to count the number of fret transitions. Another consideration is the use of the thumb to finger frets on the low E string.
 
 ## Parameters
 
 | parameter | default | description                      |
-|-----------|---------|----------------------------------|
-| `-chord`  |    C    | C major                          |
-| `-list`   |  false  | list of supported chord suffixes |
+|:----------|:-------:|:---------------------------------|
+| `-chord`  | C       | C major                          |
+| `-list`   | false   | list of supported chord suffixes |
 
 ## Sample output
 
-Several sample runs are shown below. Note how some tabs are not really playable (see Futures below).
+Several sample runs are shown below. Note how some tabs are not easily playable (see Futures below).
 
 ### Help
     # gtab -help
@@ -80,10 +80,10 @@ Several sample runs are shown below. Note how some tabs are not really playable 
 
 ## Futures
 
-`gtab` does a fair job of generating tabs for common guitar chords played in most forms of Western music, but it does get a few wrong.
+**gtab** does a fair job of generating tabs for common guitar chords played in most forms of Western music, but it does get a few wrong.
 
 Some areas of improvement are:
-- generate tabs that aren't centered off the root note/fret location
+- generate tabs that aren't based off the root note/fret location
 - do a better job of determining whether a chord is playable
 - support for additional chord formulas e.g. chord inversions and added notes
 - support for alternate guitar tunings
