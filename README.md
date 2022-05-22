@@ -4,7 +4,7 @@ A guitar tab generator
 
 ## Overview
 
-**gtab** is a command line utility that takes a chord name and generates tablature notation (tab) for playing it on a six-string guitar in standard tuning.
+**gtab** is a utility that takes a chord name and generates tablature notation (tab) for playing it on a six-string guitar in standard tuning. It can be invoked either as a command line application or with REST API calls.
 
 ## How it works
 
@@ -25,12 +25,21 @@ A weak attempt is made at determining if a chord is playable by counting the num
 
 ## Parameters
 
+### CLI
+
 | parameter | default | description                      |
 |:----------|:-------:|:---------------------------------|
 | `-chord`  | C       | C major                          |
 | `-list`   | false   | list of supported chord suffixes |
 
-## Sample output
+### REST
+
+| parameter        | description                      |
+|:-----------------|:---------------------------------|
+| `/tabs/{name}`   | returns tabs for named chord     |
+| `/list`          | list of supported chord suffixes |
+
+## Sample CLI output
 
 The output of several runs are shown below.
 
@@ -80,6 +89,24 @@ The output of several runs are shown below.
     x 9 9 11 12 9
     x x 4 4 7 7
     x x x 11 12 14
+
+## Sample REST API output
+
+Sharp chords have a hash-tag symbol which must be escaped before it can be used as a REST API endpoint. Replace `#` with either `%23` or `H`. All responses set the Content-Type header to `application/json` and return indented JSON.
+
+### Cmaj7
+
+    GET http://localhost:7777/tabs/Cmaj7
+    {
+        "chord": "Cmaj7",
+        "tabs": [
+            " 8 10 9 9 8 8",
+            " x 3 2 0 0 0",
+            " x 3 5 4 5 3",
+            " x x 10 12 12 12",
+            " x x x 5 5 7"
+        ]
+    }
 
 ## Futures
 
