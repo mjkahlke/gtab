@@ -1,6 +1,8 @@
-module gtab/api
+module gtab/rest
 
 go 1.18
+
+replace gtab/impl => ..\..\impl
 
 require (
 	github.com/gin-gonic/gin v1.7.7
@@ -23,5 +25,3 @@ require (
 	golang.org/x/sys v0.0.0-20200116001909-b77594299b42 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
-
-replace gtab/impl => ../../impl
