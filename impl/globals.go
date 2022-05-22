@@ -1,6 +1,6 @@
 // Copyright 2022 Michael Kahlke.
 
-package main
+package gtab
 
 const BADSUFFIX string = "nope"
 const FINGERS int = 4		// # fingers on one hand, not counting the thumb

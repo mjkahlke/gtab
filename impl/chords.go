@@ -1,6 +1,6 @@
 // Copyright 2022 Michael Kahlke.
 
-package main
+package gtab
 
 // Half Steps    Note    Interval
 //     0           1     unison
@@ -28,7 +28,7 @@ package main
 //    22         (14)    minor 14th
 //    23          14     major 14th, octave + 7th
 //    24          15     15th, octave + 8th
-var chords = map[string][]int {
+var Chords = map[string][]int {
 	// major
 	"":		[]int{0,4,7},		// major = 1,3,5
 	"sus2":		[]int{0,2,7},		// sustained 2nd = 1,2,5

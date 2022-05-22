@@ -1,6 +1,6 @@
 // Copyright 2022 Michael Kahlke.
 
-package main
+package gtab
 
 import (
 	"strconv"
@@ -8,20 +8,20 @@ import (
 )
 
 func TestChordComponentsBogusRoot(t *testing.T) {
-	root, _ := chordComponents("Xmaj7")
+	root, _ := ChordComponents("Xmaj7")
 	if root == "" { return }
 	t.Fatalf("Bogus chord name Xmaj7 was not caught")
 }
 
 func TestChordComponentsUnsupportedSuffix(t *testing.T) {
-	_, suffix := chordComponents("Aaug6")
+	_, suffix := ChordComponents("Aaug6")
 	if suffix == BADSUFFIX { return }
 	t.Fatalf("Unsupported chord suffix aug6 was not caught")
 }
 
 func TestGenTabCmaj7(t *testing.T) {
 	cmaj7 := []int{-1,3,2,0,0,0}
-	if genTab(cmaj7) == " x 3 2 0 0 0" { return }
+	if GenTab(cmaj7) == " x 3 2 0 0 0" { return }
 	t.Fatalf("Error generating proper tab for Cmaj7 chord")
 }
 

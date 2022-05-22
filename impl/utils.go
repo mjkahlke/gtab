@@ -1,6 +1,6 @@
 // Copyright 2022 Michael Kahlke.
 
-package main
+package gtab
 
 import (
 	"strconv"
@@ -10,7 +10,7 @@ import (
 // Order is important! List sharps and flats of a note first
 var notes = []string {"Eb","E","F#","F","Gb","G#","G","Ab","A#","A","Bb","B","C#","C","Db","D#","D"}
 
-func chordComponents(chord_name string) (string, string) {
+func ChordComponents(chord_name string) (string, string) {
 	root, suffix := "", BADSUFFIX
 	for _, note := range notes {
 		if strings.HasPrefix(chord_name, note) {
@@ -19,14 +19,14 @@ func chordComponents(chord_name string) (string, string) {
 		}
 	}
 	suffix = chord_name[len(root):]
-	_, exists := chords[suffix]
+	_, exists := Chords[suffix]
 	if !exists {
 		suffix = BADSUFFIX
 	}
 	return root, suffix
 }
 
-func genTab(atab []int) string {
+func GenTab(atab []int) string {
 	tab := ""
 	for _, fret := range atab {
 		if fret == -1 {
