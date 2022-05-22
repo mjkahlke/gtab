@@ -10,6 +10,8 @@ A guitar tab generator
 
 The root note is determined from the chord name, then the suffix is used as a map key to lookup the tonal signature of the chord. For example, Cmaj7 is a maj7 chord with a root of C. The chord construction formula for maj7 is composed of a unison, major 3rd, perfect 5th and dominant 7th note or interval. This corresponds to 0, 4, 7 and 11 half steps (frets) from the root. It is then a simple matter of counting guitar frets and strings to generate a tab.
 
+See [ARCHITECTURE.md](ARCHITECTURE.md) for instructions on how to build and run **gtab**.
+
 ## Tablature notation
 
 Guitar tab denotes fret positions on the guitar fretboard:
@@ -23,91 +25,6 @@ Tab notation does not tell you which fingers to place, only where to place them:
 
 A weak attempt is made at determining if a chord is playable by counting the number of non-open fret positions and comparing that to the number of fingers on your hand, but some chords may still prove too difficult to play; feel free to drop a note or two in these cases. A better algorithm may be to count the number of fret transitions. Another consideration is the use of the thumb to finger frets on the low E string.
 
-## Parameters
-
-### CLI
-
-| parameter | default | description                      |
-|:----------|:-------:|:---------------------------------|
-| `-chord`  | C       | C major                          |
-| `-list`   | false   | list of supported chord suffixes |
-
-### REST
-
-| parameter        | description                      |
-|:-----------------|:---------------------------------|
-| `/tabs/{name}`   | returns tabs for named chord     |
-| `/list`          | list of supported chord suffixes |
-
-## Sample CLI output
-
-The output of several runs are shown below.
-
-### Usage
-    # gtab -help
-    Usage of gtab:
-      -chord string
-            set to chord name, b=flat, #=sharp (default "C")
-      -list
-            list supported chord formulas
-
-### Cmaj7
-    # gtab -chord Cmaj7
-    8 10 9 9 8 8
-    x 3 2 0 0 0
-    x 3 5 4 5 3
-    x x 10 12 12 12
-    x x x 5 5 7
-
-### B7
-    # gtab -chord B7
-    7 9 7 8 7 7
-    x 2 1 2 0 2
-    x 2 4 2 4 2
-    x x 9 11 10 11
-    x x x 4 4 5
-
-### Abmaj7
-    # gtab -chord Abmaj7
-    4 3 1 0 1 3
-    4 6 5 5 4 4
-    x 11 13 12 13 11
-    x x 6 8 8 8
-    x x x 1 1 3
-
-### D
-    # gtab -chord D
-    10 12 12 11 10 10
-    x 5 7 7 7 5
-    x x 0 2 3 2
-    x x x 7 7 10
-    
-### F#sus4
-    # gtab -chord F#sus4
-    2 2 4 4 2 2
-    2 2 4 x 4 1
-    x 9 9 11 12 9
-    x x 4 4 7 7
-    x x x 11 12 14
-
-## Sample REST API output
-
-Sharp chords have a hash-tag symbol which must be escaped before it can be used as a REST API endpoint. Replace `#` with either `%23` or `H`. All responses set the Content-Type header to `application/json` and return indented JSON.
-
-### Cmaj7
-
-    GET http://localhost:7777/tabs/Cmaj7
-    {
-        "chord": "Cmaj7",
-        "tabs": [
-            " 8 10 9 9 8 8",
-            " x 3 2 0 0 0",
-            " x 3 5 4 5 3",
-            " x x 10 12 12 12",
-            " x x x 5 5 7"
-        ]
-    }
-
 ## Futures
 
 **gtab** does a fair job of generating tabs for common guitar chords played in most forms of Western music, but it does get a few wrong.
@@ -118,6 +35,7 @@ Some areas of improvement are:
 - support for additional chord formulas e.g. chord inversions and added notes
 - support for alternate guitar tunings
 - reverse lookup: find a chord name from tab
+- swagger for REST API
 
 ## References
 
