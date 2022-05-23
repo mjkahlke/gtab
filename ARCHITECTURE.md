@@ -1,26 +1,23 @@
 # Architecture
-
 This document describes the code layout and how to build and run **gtab**.
 
 ## Code Layout
-
 The layout is fairly simple. Shared implementation code is kept in its own directory while applications that run **gtab** are kept in separate directories. Unit tests are kept in the same directory as the module they test.
 
 ### `/`
-The layout is fairly simple:
+The toplevel directory contains markdown and build files:
 * `build.bat` - Batch file for building **gtab** on Windows
 * `build.sh` - Bash script for building **gtab** on Linux
 
 ### `impl`
-The implementation directory contain globals, utilities, and algorithms.
+The implementation directory contains global variables, constants, utilities, and algorithms.
 
 ### `cmd`
 This directory contains subdirectories for each application:
 * `cli` - the command line version. Run `cli -usage` to see how to use it.
-* `rest` - the REST API version. Use curl, postman, et.al. to query `http://localhost:7777/tabs/{chord}`
+* `rest` - the REST API version. Use curl, postman, or your browser to query `http://localhost:7777/tabs/{chord}`
 
 ## Build
-
 `build.bat` should be run from the toplevel directory of the repository. It cleans up then regenerates go.mod files, runs unit tests, and builds (but does not install) standalone executable applications in subdirectories under `cmd`.
 
 A Bash shell version is forthcoming.
@@ -94,7 +91,7 @@ The output of several runs are shown below.
 
 ## Sample REST API output
 
-Sharp chords have a hash-tag symbol which must be escaped before it can be used as a REST API endpoint. Replace `#` with either `%23` or `H`. All responses set the Content-Type header to `application/json` and return indented JSON.
+Sharp chords have a hash-tag symbol `#` which must be escaped before it can be used as a REST API endpoint. Replace `#` with either `%23` or `H`. All responses set the Content-Type header to `application/json` and return indented JSON.
 
 ### Cmaj7
 
