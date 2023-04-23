@@ -22,6 +22,7 @@ type tablature struct {
 }
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	router.GET("/list", getList)
 	router.GET("/tabs/:chord", getTabsByChord)
