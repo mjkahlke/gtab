@@ -1,0 +1,6 @@
+version: "1.2.1"
+services:
+  gtab:
+    build: .
+    ports:
+      - "7777:7777"
