@@ -1,0 +1,8 @@
+version: "1.2.1"
+services:
+  gtab:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 7777:7777

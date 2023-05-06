@@ -26,7 +26,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/list", getList)
 	router.GET("/tabs/:chord", getTabsByChord)
-	router.Run("localhost:7777")
+	router.Run(":7777")
 }
 
 func getList(c *gin.Context) {
