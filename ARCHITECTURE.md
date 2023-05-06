@@ -7,7 +7,8 @@ The layout is fairly simple. Shared implementation code is kept in its own direc
 ### `/`
 The toplevel directory contains markdown and build files:
 * `build.bat` - Batch file for building **gtab** on Windows
-* `build.sh` - Bash script for building **gtab** on Linux
+* `Dockerfile` - pulled in by docker compose
+* `docker-compose.yml` - for building the REST service in a container
 
 ### `impl`
 The implementation directory contains global variables, constants, utilities, and algorithms.
@@ -18,9 +19,18 @@ This directory contains subdirectories for each application:
 * `rest` - the REST API version. Use curl, postman, or your browser to query `http://localhost:7777/tabs/{chord}`
 
 ## Build
+
+### Windows
 `build.bat` should be run from the toplevel directory of the repository. It cleans up then regenerates go.mod files, runs unit tests, and builds (but does not install) standalone executable applications in subdirectories under `cmd`.
 
-A Bash shell version is forthcoming.
+### Docker
+I use Rancher Desktop on my PC, just use docker instead of nerdctl if you use Docker desktop.
+
+From the toplevel directory of the repository, execute `nerdctl compose build --file docker-compose.yml`. Verify that your image was built via `nerdctl image ls`
+
+Start up the container with `nerdctl run -d -p 7777:7777`
+
+Find the name of the container using `nerdctl ps` and note the container name. When you're finished, execute `nerdctl kill <container_name>` to terminate the REST service.
 
 ## Run
 
