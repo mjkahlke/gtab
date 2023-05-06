@@ -20,9 +20,6 @@ This directory contains subdirectories for each application:
 
 ## Build
 
-### Windows
-`build.bat` should be run from the toplevel directory of the repository. It cleans up then regenerates go.mod files, runs unit tests, and builds (but does not install) standalone executable applications in subdirectories under `cmd`.
-
 ### Docker
 I use Rancher Desktop on my PC, just use docker instead of nerdctl if you use Docker desktop.
 
@@ -31,6 +28,9 @@ From the toplevel directory of the repository, execute `nerdctl compose build --
 Start up the container with `nerdctl run -d -p 7777:7777`
 
 Find the name of the container using `nerdctl ps` and note the container name. When you're finished, execute `nerdctl kill <container_name>` to terminate the REST service.
+
+### Windows
+`build.bat` should be run from the toplevel directory of the repository. It cleans up then regenerates go.mod files, runs unit tests, and builds (but does not install) standalone executable applications in subdirectories under `cmd`.
 
 ## Run
 
