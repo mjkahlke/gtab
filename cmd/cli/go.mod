@@ -1,6 +1,6 @@
 module gtab/cli
 
-go 1.18
+go 1.20.5
 
 replace gtab/impl => ..\..\impl
 
