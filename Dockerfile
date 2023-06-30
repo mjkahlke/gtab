@@ -1,4 +1,6 @@
-FROM golang:latest
+FROM golang:1.19-alpine
+# Install gcc tools, required for unit tests
+RUN apk add build-base
 
 MAINTAINER mjkgit@gmail.com
 
