@@ -6,40 +6,95 @@ package gtab
 
 import (
 	"sort"
+	"sync"
 )
 
 func Match(root string, suffix string) []string {
 	halfsteps := Chords[suffix]
 	var tabs = make(map[string][]int)
 
+	var lock sync.Mutex
+	var w sync.WaitGroup
+
 	// Fingered chord
-	root_string, root_fret := findRoot(root)
-	tab := findTab(root_string, root_fret, halfsteps, false)
-	if playable(tab) { tabs[GenTab(tab)] = tab }
+	w.Add(1)
+	go func() {
+		root_string, root_fret := findRoot(root)
+		tab := findTab(root_string, root_fret, halfsteps, false)
+		if playable(tab) {
+			lock.Lock()
+			tabs[GenTab(tab)] = tab
+			lock.Unlock()
+		}
+		w.Done()
+	}()
 
 	// Bar chord
-	tab = findTab(root_string, root_fret, halfsteps, true)
-	if playable(tab) { tabs[GenTab(tab)] = tab }
+	w.Add(1)
+	go func() {
+		root_string, root_fret := findRoot(root)
+		tab := findTab(root_string, root_fret, halfsteps, true)
+		if playable(tab) {
+			lock.Lock()
+			tabs[GenTab(tab)] = tab
+			lock.Unlock()
+		}
+		w.Done()
+	}()
 
 	// Root on low E string
-	root_string, root_fret = findRootOnString(root, E)
-	tab = findTab(root_string, root_fret, halfsteps, true)
-	if playable(tab) { tabs[GenTab(tab)] = tab }
+	w.Add(1)
+	go func() {
+		root_string, root_fret := findRootOnString(root, E)
+		tab := findTab(root_string, root_fret, halfsteps, true)
+		if playable(tab) {
+			lock.Lock()
+			tabs[GenTab(tab)] = tab
+			lock.Unlock()
+		}
+		w.Done()
+	}()
 
 	// Root on A string
-	root_string, root_fret = findRootOnString(root, A)
-	tab = findTab(root_string, root_fret, halfsteps, true)
-	if playable(tab) { tabs[GenTab(tab)] = tab }
+	w.Add(1)
+	go func() {
+		root_string, root_fret := findRootOnString(root, A)
+		tab := findTab(root_string, root_fret, halfsteps, true)
+		if playable(tab) {
+			lock.Lock()
+			tabs[GenTab(tab)] = tab
+			lock.Unlock()
+		}
+		w.Done()
+	}()
 
 	// Root on D string
-	root_string, root_fret = findRootOnString(root, D)
-	tab = findTab(root_string, root_fret, halfsteps, true)
-	if playable(tab) { tabs[GenTab(tab)] = tab }
+	w.Add(1)
+	go func() {
+		root_string, root_fret := findRootOnString(root, D)
+		tab := findTab(root_string, root_fret, halfsteps, true)
+		if playable(tab) {
+			lock.Lock()
+			tabs[GenTab(tab)] = tab
+			lock.Unlock()
+		}
+		w.Done()
+	}()
 
 	// Root on G string
-	root_string, root_fret = findRootOnString(root, G)
-	tab = findTab(root_string, root_fret, halfsteps, true)
-	if playable(tab) { tabs[GenTab(tab)] = tab }
+	w.Add(1)
+	go func() {
+		root_string, root_fret := findRootOnString(root, G)
+		tab := findTab(root_string, root_fret, halfsteps, true)
+		if playable(tab) {
+			lock.Lock()
+			tabs[GenTab(tab)] = tab
+			lock.Unlock()
+		}
+		w.Done()
+	}()
+
+	w.Wait()
 
 	// Sort and display tabs
 	keys := make([]string, 0, len(tabs))
